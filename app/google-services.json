@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1090065002249",
+    "project_id": "gunstagram-f575b",
+    "storage_bucket": "gunstagram-f575b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1090065002249:android:655662eace9d2cf49c6dd8",
+        "android_client_info": {
+          "package_name": "com.psg.gunstagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1090065002249-mln2g49bobjhd5aellj9a8pi58q7ad2c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.psg.gunstagram",
+            "certificate_hash": "189250577ae0494571ebc33482677c8061d09a39"
+          }
+        },
+        {
+          "client_id": "1090065002249-mmn0cduhnsqkvdt2mpmuorqdldpu4kht.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBweeTXvVeDemNyqBaU2izWIUzZWk2Iy08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1090065002249-mmn0cduhnsqkvdt2mpmuorqdldpu4kht.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
