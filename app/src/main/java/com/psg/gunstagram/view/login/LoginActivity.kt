@@ -7,11 +7,13 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import com.google.android.gms.auth.api.Auth
+import com.google.firebase.auth.FirebaseUser
 import com.psg.gunstagram.R
 import com.psg.gunstagram.databinding.ActivityLoginBinding
 import com.psg.gunstagram.util.AppLogger
 import com.psg.gunstagram.view.base.BaseActivity
 import com.psg.gunstagram.view.base.BaseViewModel
+import com.psg.gunstagram.view.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -19,7 +21,6 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-
 
 
 class LoginActivity : BaseActivity<ActivityLoginBinding,LoginViewModel>(R.layout.activity_login) {
@@ -33,13 +34,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding,LoginViewModel>(R.layout
         setEventFlow()
     }
 
-    private fun setEventFlow(){
-        CoroutineScope(Dispatchers.IO).launch{
-            viewModel.eventFlow.collect { event -> handleEvent(event) }
-        }
-    }
 
-    private fun handleEvent(event: BaseViewModel.Event) = when (event){
+    override fun handleEvent(event: BaseViewModel.Event) = when (event){
         is BaseViewModel.Event.ShowToast ->
             CoroutineScope(Dispatchers.Main).launch {
                 makeToast(event.text)
@@ -73,7 +69,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding,LoginViewModel>(R.layout
         }
     }
 
+    private fun signEmail(user: FirebaseUser?) {
+        if (user != null) startActivity(Intent(this, MainActivity::class.java))
+    }
 
+    private fun signGoogle(intent: Intent, loginCode: Int) {
+        startActivityForResult(intent,loginCode)
+    }
 
 
 }

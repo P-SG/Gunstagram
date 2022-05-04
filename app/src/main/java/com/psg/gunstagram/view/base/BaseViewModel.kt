@@ -27,7 +27,7 @@ open class BaseViewModel:ViewModel() {
     }
 
 
-    fun event(event:Event) {
+    private fun event(event:Event) {
         CoroutineScope(Dispatchers.IO).launch{
             _eventFlow.emit(event)
         }

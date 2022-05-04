@@ -130,7 +130,7 @@ class LoginViewModel:BaseViewModel() {
     }
 
 
-    fun moveMainPage(user: FirebaseUser?){
+    private fun moveMainPage(user: FirebaseUser?){
         signEmailEvent(user)
     }
 

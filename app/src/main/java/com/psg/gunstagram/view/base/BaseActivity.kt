@@ -10,6 +10,11 @@ import androidx.databinding.ViewDataBinding
 import com.google.firebase.auth.FirebaseUser
 import com.psg.gunstagram.util.AppLogger
 import com.psg.gunstagram.view.main.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val res: Int): AppCompatActivity() {
     lateinit var binding: T
@@ -24,12 +29,19 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val
 
     open fun makeToast(msg:String) = Toast.makeText(this ,msg, Toast.LENGTH_SHORT).show()
 
-    open fun signEmail(user: FirebaseUser?) {
-        if (user != null) startActivity(Intent(this,MainActivity::class.java))
+    open fun setEventFlow(){
+       CoroutineScope(Dispatchers.IO).launch{
+           viewModel.eventFlow.collect { event -> handleEvent(event) }
+       }
     }
 
-    open fun signGoogle(intent: Intent, loginCode: Int) {
-        startActivityForResult(intent,loginCode)
+    open fun handleEvent(event: BaseViewModel.Event) = when (event){
+        is BaseViewModel.Event.ShowToast ->
+        CoroutineScope(Dispatchers.Main).launch {
+            makeToast(event.text)
+        }
+
+        else -> {}
     }
 
     open fun initView(){
