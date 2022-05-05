@@ -22,7 +22,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initView()
+//        initView()
     }
 
     override fun initView() {

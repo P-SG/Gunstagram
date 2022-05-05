@@ -30,8 +30,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding,LoginViewModel>(R.layout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initView()
-        setEventFlow()
+//        initView()
+//        setEventFlow()
     }
 
 

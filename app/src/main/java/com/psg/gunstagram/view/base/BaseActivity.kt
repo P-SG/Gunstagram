@@ -25,6 +25,8 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, res)
         binding.lifecycleOwner = this
+        initView()
+        setEventFlow()
     }
 
     open fun makeToast(msg:String) = Toast.makeText(this ,msg, Toast.LENGTH_SHORT).show()
