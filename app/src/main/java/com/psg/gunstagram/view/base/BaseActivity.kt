@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.google.firebase.auth.FirebaseUser
 import com.psg.gunstagram.util.AppLogger
+import com.psg.gunstagram.util.Event
 import com.psg.gunstagram.view.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,14 +32,14 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>(@LayoutRes val
 
     open fun makeToast(msg:String) = Toast.makeText(this ,msg, Toast.LENGTH_SHORT).show()
 
-    open fun setEventFlow(){
+     private fun setEventFlow(){
        CoroutineScope(Dispatchers.IO).launch{
            viewModel.eventFlow.collect { event -> handleEvent(event) }
        }
     }
 
-    open fun handleEvent(event: BaseViewModel.Event) = when (event){
-        is BaseViewModel.Event.ShowToast ->
+    open fun handleEvent(event: Event) = when (event){
+        is Event.ShowToast ->
         CoroutineScope(Dispatchers.Main).launch {
             makeToast(event.text)
         }

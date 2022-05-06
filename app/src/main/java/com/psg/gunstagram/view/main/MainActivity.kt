@@ -1,12 +1,19 @@
 package com.psg.gunstagram.view.main
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.psg.gunstagram.R
 import com.psg.gunstagram.databinding.ActivityMainBinding
+import com.psg.gunstagram.util.Constants
 import com.psg.gunstagram.view.base.BaseActivity
 import com.psg.gunstagram.view.login.LoginActivity
 import com.psg.gunstagram.view.login.LoginViewModel
@@ -14,9 +21,11 @@ import com.psg.gunstagram.view.navi.AlarmFragment
 import com.psg.gunstagram.view.navi.DetailViewFragment
 import com.psg.gunstagram.view.navi.GridFragment
 import com.psg.gunstagram.view.navi.UserFragment
+import com.psg.gunstagram.view.photo.AddPhotoActivity
 import org.koin.android.ext.android.inject
 
-class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.activity_main), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main),
+    BottomNavigationView.OnNavigationItemSelectedListener {
     override val TAG: String = MainActivity::class.java.simpleName
     override val viewModel: MainViewModel by inject()
 
@@ -26,35 +35,79 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(R.layout.ac
     }
 
     override fun initView() {
+        initFragment("home")
         binding.bnvMain.setOnNavigationItemSelectedListener(this)
     }
 
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.action_home -> {
-                val detailViewFragment = DetailViewFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.fl_main, detailViewFragment).commit()
+                initFragment(Constants.FRAGMENT_HOME)
                 return true
             }
             R.id.action_search -> {
-                val gridFragment = GridFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.fl_main, gridFragment).commit()
+                initFragment(Constants.FRAGMENT_SEARCH)
                 return true
             }
             R.id.action_add_photo -> {
+                checkPermission()
                 return true
             }
             R.id.action_favorite -> {
-                val alarmFragment = AlarmFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.fl_main, alarmFragment).commit()
+                initFragment(Constants.FRAGMENT_FAVORITE)
                 return true
             }
             R.id.action_account -> {
-                val userFragment = UserFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.fl_main, userFragment).commit()
+                initFragment(Constants.FRAGMENT_ACCOUNT)
                 return true
             }
         }
         return false
+    }
+
+    private fun initFragment(key: String) {
+        when (key) {
+           Constants.FRAGMENT_HOME -> {
+                val detailViewFragment = DetailViewFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.fl_main, detailViewFragment)
+                    .commit()
+            }
+            Constants.FRAGMENT_SEARCH -> {
+                val gridFragment = GridFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.fl_main, gridFragment)
+                    .commit()
+            }
+            Constants.FRAGMENT_FAVORITE -> {
+                val alarmFragment = AlarmFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.fl_main, alarmFragment)
+                    .commit()
+            }
+            Constants.FRAGMENT_ACCOUNT -> {
+                val userFragment = UserFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.fl_main, userFragment)
+                    .commit()
+            }
+        }
+    }
+
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            1
+        )
+    }
+
+    private fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            startActivity(Intent(this, AddPhotoActivity::class.java))
+        } else {
+            requestPermission()
+        }
     }
 }

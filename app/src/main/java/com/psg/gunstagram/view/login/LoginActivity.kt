@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.psg.gunstagram.R
 import com.psg.gunstagram.databinding.ActivityLoginBinding
 import com.psg.gunstagram.util.AppLogger
+import com.psg.gunstagram.util.Event
 import com.psg.gunstagram.view.base.BaseActivity
 import com.psg.gunstagram.view.base.BaseViewModel
 import com.psg.gunstagram.view.main.MainActivity
@@ -35,19 +36,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding,LoginViewModel>(R.layout
     }
 
 
-    override fun handleEvent(event: BaseViewModel.Event) = when (event){
-        is BaseViewModel.Event.ShowToast ->
+    override fun handleEvent(event: Event) = when (event){
+        is Event.ShowToast ->
             CoroutineScope(Dispatchers.Main).launch {
                 makeToast(event.text)
             }
-        is BaseViewModel.Event.SignEmail ->
+        is Event.SignEmail ->
             CoroutineScope(Dispatchers.Main).launch {
                 signEmail(event.user)
             }
-        is BaseViewModel.Event.SignGoogle ->
+        is Event.SignGoogle ->
             CoroutineScope(Dispatchers.Main).launch {
                 signGoogle(event.intent,event.code)
             }
+        else -> {}
     }
 
     override fun initView(){
