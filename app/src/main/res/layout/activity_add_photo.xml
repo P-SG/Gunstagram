@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="vm"
+            type="com.psg.gunstagram.view.photo.AddPhotoViewModel" />
+    </data>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.photo.AddPhotoActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_addPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/logo_title"/>
+    </androidx.appcompat.widget.Toolbar>
+    <LinearLayout
+        android:id="@+id/ll_division"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDivision"
+        android:layout_below="@+id/tb_addPhoto"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_addPhoto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/ll_division"
+        android:scaleType="centerCrop"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_addPhoto"
+        android:layout_below="@+id/ll_division"
+        android:layout_toRightOf="@id/iv_addPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/et_addPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="@string/hint_image_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_addPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/til_addPhoto"
+        android:layout_toRightOf="@+id/iv_addPhoto"
+        android:text="@string/upload_image"
+        android:onClick="@{()->vm.uploadSuccess()}"
+        android:textColor="@color/black" />
+
+</RelativeLayout>
+</layout>

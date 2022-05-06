@@ -19,7 +19,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
-        android:id="@+id/toolbar_division"
+        android:id="@+id/ll_division"
         android:background="@color/colorDivision"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -30,7 +30,7 @@
         android:id="@+id/fl_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar_division" />
+        android:layout_below="@+id/ll_division" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnv_main"

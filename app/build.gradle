@@ -84,4 +84,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
 
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    implementation 'com.google.firebase:firebase-storage:20.0.1'
 }
