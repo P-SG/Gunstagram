@@ -35,6 +35,7 @@ class AddPhotoActivity : BaseActivity<ActivityAddPhotoBinding, AddPhotoViewModel
         super.initView()
         requestPhotoUpload()
         binding.vm = viewModel
+
 //        binding.btnAddPhoto.setOnClickListener {
 //            uploadSuccess()
 //        }
@@ -50,6 +51,7 @@ class AddPhotoActivity : BaseActivity<ActivityAddPhotoBinding, AddPhotoViewModel
             if (event.success){
                 CoroutineScope(Dispatchers.Main).launch{
                     makeToast(getString(R.string.upload_success))
+                    setResult(Activity.RESULT_OK)
                 }
                 finish()
             } else {

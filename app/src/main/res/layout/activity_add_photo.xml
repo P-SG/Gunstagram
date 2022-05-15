@@ -60,7 +60,7 @@
         android:layout_below="@+id/til_addPhoto"
         android:layout_toRightOf="@+id/iv_addPhoto"
         android:text="@string/upload_image"
-        android:onClick="@{()->vm.uploadSuccess()}"
+        android:onClick="@{()->vm.uploadSuccess(etAddPhoto.getText().toString())}"
         android:textColor="@color/black" />
 
 </RelativeLayout>
