@@ -37,6 +37,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     override fun initView() {
         initFragment("home")
         binding.bnvMain.setOnNavigationItemSelectedListener(this)
+
+        binding.bnvMain.selectedItemId = R.id.action_home
     }
 
 
