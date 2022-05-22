@@ -1,4 +1,4 @@
-package com.psg.gunstagram.view.navi
+package com.psg.gunstagram.view.navi.detail
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
 import com.psg.gunstagram.R
 import com.psg.gunstagram.databinding.FragmentDetailBinding
-import com.psg.gunstagram.view.navi.adapter.DetailAdapter
-import com.psg.gunstagram.view.navi.model.ContentDTO
+import org.koin.android.ext.android.inject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,12 +22,12 @@ private const val ARG_PARAM2 = "param2"
  * Use the [DetailViewFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DetailViewFragment : Fragment() {
+class DetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentDetailBinding
-
+    private val viewModel: DetailViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,10 +41,17 @@ class DetailViewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val detailAdapter = DetailAdapter()
 
+        viewModel.contentDTO.observe(viewLifecycleOwner) {
+            if (it != null) {
+                detailAdapter.setData(it)
+            }
+        }
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         // Inflate the layout for this fragment
-        binding.rvDetail.adapter = DetailAdapter()
+
+        binding.rvDetail.adapter = detailAdapter
         binding.rvDetail.layoutManager = LinearLayoutManager(activity)
         return binding.root
     }
@@ -64,7 +69,7 @@ class DetailViewFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            DetailViewFragment().apply {
+            DetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

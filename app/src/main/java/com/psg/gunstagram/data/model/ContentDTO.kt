@@ -1,4 +1,4 @@
-package com.psg.gunstagram.view.navi.model
+package com.psg.gunstagram.data.model
 
 data class ContentDTO(
     var explain: String? = null,

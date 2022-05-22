@@ -1,4 +1,4 @@
-package com.psg.gunstagram.view.navi.adapter
+package com.psg.gunstagram.view.navi.detail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,27 +8,27 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.psg.gunstagram.R
 import com.psg.gunstagram.databinding.ItemDetailBinding
-import com.psg.gunstagram.view.navi.model.ContentDTO
+import com.psg.gunstagram.data.model.ContentDTO
 
 class DetailAdapter: RecyclerView.Adapter<DetailAdapter.DetailViewHolder>(){
     var fireStore: FirebaseFirestore? = null
-    var contentDTOs: ArrayList<ContentDTO> = arrayListOf()
-    var contentUidList: ArrayList<String> = arrayListOf()
-    init {
-        fireStore?.collection("images")?.orderBy("timestamp")?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-            contentDTOs.clear()
-            contentUidList.clear()
-            for (snapshot in querySnapshot!!.documents){
-                var item = snapshot.toObject(ContentDTO::class.java)
-                contentDTOs.add(item!!)
-                contentUidList.add(snapshot.id)
-            }
-            notifyDataSetChanged()
+    var contentDTOs: List<ContentDTO> = arrayListOf()
+    var contentUidList: List<String> = arrayListOf()
 
-        }
-    }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailAdapter.DetailViewHolder {
-        fireStore = FirebaseFirestore.getInstance()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
+//        fireStore = FirebaseFirestore.getInstance()
+//        fireStore?.collection("images")?.orderBy("timestamp")?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+//            contentDTOs.clear()
+//            contentUidList.clear()
+//            for (snapshot in querySnapshot!!.documents){
+//                var item = snapshot.toObject(ContentDTO::class.java)
+//                contentDTOs.add(item!!)
+//                contentUidList.add(snapshot.id)
+//            }
+//            notifyDataSetChanged()
+//
+//        }
 //        var view = LayoutInflater.from(parent.context).inflate(R.layout.item_detail,parent,false)
         return DetailViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_detail,parent,false))
     }
@@ -37,6 +37,10 @@ class DetailAdapter: RecyclerView.Adapter<DetailAdapter.DetailViewHolder>(){
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
         holder.bind(contentDTOs[position])
 
+    }
+
+    fun setData(items: List<ContentDTO>){
+        contentDTOs = items
     }
 
     override fun getItemCount(): Int {

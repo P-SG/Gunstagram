@@ -8,7 +8,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.psg.gunstagram.util.Event
 import com.psg.gunstagram.view.base.BaseViewModel
-import com.psg.gunstagram.view.navi.model.ContentDTO
+import com.psg.gunstagram.data.model.ContentDTO
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -18,9 +18,9 @@ import com.psg.gunstagram.view.base.BaseActivity
 import com.psg.gunstagram.view.login.LoginActivity
 import com.psg.gunstagram.view.login.LoginViewModel
 import com.psg.gunstagram.view.navi.AlarmFragment
-import com.psg.gunstagram.view.navi.DetailViewFragment
 import com.psg.gunstagram.view.navi.GridFragment
 import com.psg.gunstagram.view.navi.UserFragment
+import com.psg.gunstagram.view.navi.detail.DetailFragment
 import com.psg.gunstagram.view.photo.AddPhotoActivity
 import org.koin.android.ext.android.inject
 
@@ -71,7 +71,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     private fun initFragment(key: String) {
         when (key) {
            Constants.FRAGMENT_HOME -> {
-                val detailViewFragment = DetailViewFragment()
+                val detailViewFragment = DetailFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.fl_main, detailViewFragment)
                     .commit()
             }
