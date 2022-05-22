@@ -3,6 +3,7 @@ package com.psg.gunstagram.view.navi.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.psg.gunstagram.data.model.ContentDTO
 import com.psg.gunstagram.view.base.BaseViewModel
@@ -14,6 +15,9 @@ class DetailViewModel: BaseViewModel() {
     private var fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
     val contentDTO: LiveData<List<ContentDTO>> get() = _contentDTO
     private val _contentDTO = MutableLiveData<List<ContentDTO>>()
+
+    val uid: LiveData<String> get() = _uid
+    private val _uid = MutableLiveData<String>()
 
     init {
         getContent()
@@ -34,10 +38,29 @@ class DetailViewModel: BaseViewModel() {
                 }
                 viewModelScope.launch {
                     withContext(Dispatchers.Main){
+                        _uid.value = FirebaseAuth.getInstance().currentUser?.uid
                         _contentDTO.value = contentDTOs
 
                     }
                 }
             }
+    }
+
+    fun favoriteEvent(position: Int) {
+        val contentUidList: ArrayList<String> = arrayListOf()
+        val tsDoc = fireStore.collection("images").document(contentUidList[position])
+        fireStore.runTransaction{ transaction ->
+            val uid = FirebaseAuth.getInstance().currentUser?.uid
+            val contentDTO = transaction.get(tsDoc!!).toObject(ContentDTO::class.java)
+
+            if (contentDTO!!.favorites.containsKey(uid)){
+                contentDTO.favoriteCount = contentDTO.favoriteCount -1
+                contentDTO.favorites.remove(uid)
+            } else {
+                contentDTO.favoriteCount = contentDTO.favoriteCount + 1
+                contentDTO.favorites[uid!!] = true
+            }
+            transaction.set(tsDoc,contentDTO)
+        }
     }
 }

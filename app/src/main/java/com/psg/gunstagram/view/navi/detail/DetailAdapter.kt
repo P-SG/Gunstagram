@@ -1,6 +1,7 @@
 package com.psg.gunstagram.view.navi.detail
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ class DetailAdapter: RecyclerView.Adapter<DetailAdapter.DetailViewHolder>(){
     var fireStore: FirebaseFirestore? = null
     var contentDTOs: List<ContentDTO> = arrayListOf()
     var contentUidList: List<String> = arrayListOf()
+    var sUid: String? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
@@ -43,8 +45,22 @@ class DetailAdapter: RecyclerView.Adapter<DetailAdapter.DetailViewHolder>(){
         contentDTOs = items
     }
 
+    fun setUid(uid: String){
+        sUid = uid
+    }
+
     override fun getItemCount(): Int {
         return contentDTOs.size
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(v: View, data: ContentDTO, pos: Int)
+    }
+
+    private var listener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
     }
 
     inner class DetailViewHolder(private val binding: ItemDetailBinding):
@@ -72,6 +88,13 @@ class DetailAdapter: RecyclerView.Adapter<DetailAdapter.DetailViewHolder>(){
             Glide.with(itemView.context)
                 .load(contentDTOs[pos].imageUrl)
                 .into(binding.ivDetailProfile)
+
+
+            if (contentDTOs[pos].favorites.containsKey(sUid)) {
+                binding.ivDetailFavorite.setImageResource(R.drawable.ic_favorite)
+            } else {
+                binding.ivDetailFavorite.setImageResource(R.drawable.ic_favorite_border)
+            }
 
         }
     }

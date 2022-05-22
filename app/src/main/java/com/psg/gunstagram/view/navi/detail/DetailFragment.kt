@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.psg.gunstagram.R
+import com.psg.gunstagram.data.model.ContentDTO
 import com.psg.gunstagram.databinding.FragmentDetailBinding
 import org.koin.android.ext.android.inject
 
@@ -48,6 +49,21 @@ class DetailFragment : Fragment() {
                 detailAdapter.setData(it)
             }
         }
+        viewModel.uid.observe(viewLifecycleOwner){
+            if (it != null) {
+                detailAdapter.setUid(it)
+            }
+        }
+        detailAdapter.setOnItemClickListener(object : DetailAdapter.OnItemClickListener {
+            override fun onItemClick(v: View, data: ContentDTO, pos: Int) {
+                when(v.id){
+                    R.id.iv_detail_favorite -> { // 좋아요 버튼 클릭 이벤트
+                        viewModel.favoriteEvent(pos)
+                    }
+                }
+            }
+
+        })
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         // Inflate the layout for this fragment
 
@@ -55,6 +71,9 @@ class DetailFragment : Fragment() {
         binding.rvDetail.layoutManager = LinearLayoutManager(activity)
         return binding.root
     }
+
+
+
 
 
     companion object {
