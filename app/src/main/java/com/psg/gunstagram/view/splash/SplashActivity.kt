@@ -31,13 +31,15 @@ class SplashActivity : AppCompatActivity() {
         if(autoLogin){
             Handler(Looper.getMainLooper()).postDelayed({
                 startActivity(Intent(this, MainActivity::class.java))
+                finish()
             },3000)
         } else {
             Handler(Looper.getMainLooper()).postDelayed({
                 startActivity(Intent(this, LoginActivity::class.java))
+                finish()
             },3000)
         }
-        finish()
+
 
     }
 }
