@@ -28,17 +28,20 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     BottomNavigationView.OnNavigationItemSelectedListener {
     override val TAG: String = MainActivity::class.java.simpleName
     override val viewModel: MainViewModel by inject()
+    private lateinit var detailViewFragment: DetailFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        initView()
+
     }
 
     override fun initView() {
+        detailViewFragment = DetailFragment()
         initFragment("home")
         binding.bnvMain.setOnNavigationItemSelectedListener(this)
 
         binding.bnvMain.selectedItemId = R.id.action_home
+
     }
 
 
@@ -71,7 +74,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
     private fun initFragment(key: String) {
         when (key) {
            Constants.FRAGMENT_HOME -> {
-                val detailViewFragment = DetailFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.fl_main, detailViewFragment)
                     .commit()
             }

@@ -29,17 +29,15 @@
     <FrameLayout
         android:id="@+id/fl_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/ll_division" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_division"
+        android:layout_above="@id/bnv_main"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnv_main"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/bottom_navigation_main">
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
-
-
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_navigation_main"/>
   </RelativeLayout>
 </layout>
