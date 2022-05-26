@@ -18,23 +18,7 @@ class DetailAdapter: RecyclerView.Adapter<DetailAdapter.DetailViewHolder>(){
     var sUid: String? = null
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
-//        fireStore = FirebaseFirestore.getInstance()
-//        fireStore?.collection("images")?.orderBy("timestamp")?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-//            contentDTOs.clear()
-//            contentUidList.clear()
-//            for (snapshot in querySnapshot!!.documents){
-//                var item = snapshot.toObject(ContentDTO::class.java)
-//                contentDTOs.add(item!!)
-//                contentUidList.add(snapshot.id)
-//            }
-//            notifyDataSetChanged()
-//
-//        }
-//        var view = LayoutInflater.from(parent.context).inflate(R.layout.item_detail,parent,false)
-        return DetailViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_detail,parent,false))
-    }
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder = DetailViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_detail,parent,false))
 
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
         holder.bind(contentDTOs[position])
