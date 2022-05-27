@@ -19,16 +19,19 @@ class DetailViewModel: BaseViewModel() {
     val uid: LiveData<String> get() = _uid
     private val _uid = MutableLiveData<String>()
 
-    init {
-        getContent()
-    }
+    val isLoading: LiveData<Boolean> get() = _isLoading
+    private val _isLoading = MutableLiveData(true)
 
-    private fun getContent() {
+    val isRefresh: LiveData<Boolean> get() = _isRefresh
+    private val _isRefresh = MutableLiveData(true)
+
+
+     fun getContent() {
         val contentDTOs: ArrayList<ContentDTO> = arrayListOf()
         val contentUidList: ArrayList<String> = arrayListOf()
 
         fireStore.collection("images")
-            .orderBy("timestamp").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            .orderBy("timeStamp").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 contentDTOs.clear()
                 contentUidList.clear()
                 for (snapshot in querySnapshot!!.documents){
@@ -40,7 +43,8 @@ class DetailViewModel: BaseViewModel() {
                     withContext(Dispatchers.Main){
                         _uid.value = FirebaseAuth.getInstance().currentUser?.uid
                         _contentDTO.value = contentDTOs
-
+                        _isLoading.value = false
+                        _isRefresh.value = false
                     }
                 }
             }

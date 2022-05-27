@@ -27,10 +27,12 @@ class DetailAdapter: RecyclerView.Adapter<DetailAdapter.DetailViewHolder>(){
 
     fun setData(items: List<ContentDTO>){
         contentDTOs = items
+        notifyDataSetChanged()
     }
 
     fun setUid(uid: String){
         sUid = uid
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
@@ -66,7 +68,7 @@ class DetailAdapter: RecyclerView.Adapter<DetailAdapter.DetailViewHolder>(){
             binding.tvDetailExplain.text = contentDTOs[pos].explain
 
             // Likes
-            binding.tvDetailFavoriteCounter.text = "Likes " + contentDTOs[pos].favoriteCount
+            binding.tvDetailFavoriteCounter.text = "좋아요 " + contentDTOs[pos].favoriteCount
 
             // Profile Image
             Glide.with(itemView.context)

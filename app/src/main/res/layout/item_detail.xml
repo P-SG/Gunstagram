@@ -7,7 +7,8 @@
     </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+   android:layout_marginBottom="20dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -22,6 +23,7 @@
         <TextView
             android:id="@+id/tv_detail_profile"
             android:text="User Name"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -47,14 +49,17 @@
     </LinearLayout>
     <TextView
         android:id="@+id/tv_detail_favoriteCounter"
-        android:text="like 0"
+        android:text="좋아요 0"
+        android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/tv_detail_explain"
         android:text="Explain content"
+        android:textSize="16sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        />
 
 
 </LinearLayout>

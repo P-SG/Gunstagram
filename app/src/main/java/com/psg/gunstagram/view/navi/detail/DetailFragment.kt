@@ -1,13 +1,20 @@
 package com.psg.gunstagram.view.navi.detail
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.psg.gunstagram.R
 import com.psg.gunstagram.data.model.ContentDTO
 import com.psg.gunstagram.databinding.FragmentDetailBinding
@@ -29,6 +36,9 @@ class DetailFragment : Fragment() {
     private var param2: String? = null
     private lateinit var binding: FragmentDetailBinding
     private val viewModel: DetailViewModel by inject()
+    private val detailAdapter = DetailAdapter()
+    private var firstFlag = true
+    lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +52,38 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val detailAdapter = DetailAdapter()
+        println("onCreateView")
+        viewModel.getContent()
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            if (!it) {
+                initView()
+                progressOff()
+            } else {
+                progressOn()
+            }
+        }
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
+        // Inflate the layout for this fragment
+
+        binding.rvDetail.adapter = detailAdapter
+        val manager = LinearLayoutManager(activity)
+        manager.reverseLayout = true
+        manager.stackFromEnd = true
+        binding.rvDetail.layoutManager = manager
+        return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!firstFlag){
+            binding.rvDetail.smoothScrollToPosition(detailAdapter.itemCount)
+        }
+        firstFlag = false
+    }
+
+
+    private fun initView() {
 
         viewModel.contentDTO.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -62,16 +103,33 @@ class DetailFragment : Fragment() {
                     }
                 }
             }
-
         })
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
-        // Inflate the layout for this fragment
-
-        binding.rvDetail.adapter = detailAdapter
-        binding.rvDetail.layoutManager = LinearLayoutManager(activity)
-        return binding.root
+        binding.srlDetail.setOnRefreshListener {
+            refresh()
+        }
     }
 
+    private fun progressOn() {
+        dialog = Dialog(requireContext()).apply {
+            setCancelable(false)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setContentView(R.layout.dialog_loading)
+            show()
+        }
+
+
+    }
+
+    private fun progressOff(){
+        dialog.dismiss()
+    }
+
+    private fun refresh(){
+        viewModel.getContent()
+        viewModel.isRefresh.observe(viewLifecycleOwner) {
+            binding.srlDetail.isRefreshing = it
+        }
+    }
 
 
 
