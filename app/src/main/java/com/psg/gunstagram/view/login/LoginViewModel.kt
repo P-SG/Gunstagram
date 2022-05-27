@@ -1,9 +1,7 @@
 package com.psg.gunstagram.view.login
 
 import android.content.Intent
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -21,10 +19,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.psg.gunstagram.util.AppLogger
 import com.psg.gunstagram.util.Event
 import com.psg.gunstagram.view.base.BaseViewModel
-import com.psg.gunstagram.view.main.MainActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
 
 class LoginViewModel : BaseViewModel() {
@@ -35,7 +29,6 @@ class LoginViewModel : BaseViewModel() {
 
     init {
         auth = FirebaseAuth.getInstance()
-
     }
 
     /**
@@ -139,12 +132,11 @@ class LoginViewModel : BaseViewModel() {
         signEmailEvent(user)
     }
 
-
-     fun signEmailEvent(user: FirebaseUser?) {
+     private fun signEmailEvent(user: FirebaseUser?) {
         event(Event.SignEmail(user))
     }
 
-     fun signGoogleEvent(intent: Intent, code: Int) {
+     private fun signGoogleEvent(intent: Intent, code: Int) {
         event(Event.SignGoogle(intent, code))
     }
 

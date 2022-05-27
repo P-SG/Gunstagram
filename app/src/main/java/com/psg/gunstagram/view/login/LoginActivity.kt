@@ -49,12 +49,14 @@ class LoginActivity : BaseActivity<ActivityLoginBinding,LoginViewModel>(R.layout
             CoroutineScope(Dispatchers.Main).launch {
                 signGoogle(event.intent,event.code)
             }
+
         else -> {}
     }
 
     override fun initView(){
         binding.activity = this
         binding.vm = viewModel
+
     }
 
 
