@@ -68,7 +68,7 @@ class DetailAdapter: RecyclerView.Adapter<DetailAdapter.DetailViewHolder>(){
             binding.tvDetailExplain.text = contentDTOs[pos].explain
 
             // Likes
-            binding.tvDetailFavoriteCounter.text = "좋아요 " + contentDTOs[pos].favoriteCount
+            binding.tvDetailFavoriteCounter.text = "좋아요 ${contentDTOs[pos].favoriteCount}개"
 
             // Profile Image
             Glide.with(itemView.context)
