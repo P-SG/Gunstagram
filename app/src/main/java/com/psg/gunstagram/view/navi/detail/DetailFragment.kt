@@ -66,11 +66,8 @@ class DetailFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         // Inflate the layout for this fragment
 
-        binding.rvDetail.adapter = detailAdapter
-        val manager = LinearLayoutManager(activity)
-        manager.reverseLayout = true
-        manager.stackFromEnd = true
-        binding.rvDetail.layoutManager = manager
+        initRecycler()
+
         return binding.root
     }
 
@@ -84,7 +81,6 @@ class DetailFragment : Fragment() {
 
 
     private fun initView() {
-
         viewModel.contentDTO.observe(viewLifecycleOwner) {
             if (it != null) {
                 detailAdapter.setData(it)
@@ -95,6 +91,18 @@ class DetailFragment : Fragment() {
                 detailAdapter.setUid(it)
             }
         }
+
+        binding.srlDetail.setOnRefreshListener {
+            refresh()
+        }
+    }
+
+    private fun initRecycler(){
+        binding.rvDetail.adapter = detailAdapter
+        val manager = LinearLayoutManager(activity)
+        manager.reverseLayout = true
+        manager.stackFromEnd = true
+        binding.rvDetail.layoutManager = manager
         detailAdapter.setOnItemClickListener(object : DetailAdapter.OnItemClickListener {
             override fun onItemClick(v: View, data: ContentDTO, pos: Int) {
                 when(v.id){
@@ -104,9 +112,6 @@ class DetailFragment : Fragment() {
                 }
             }
         })
-        binding.srlDetail.setOnRefreshListener {
-            refresh()
-        }
     }
 
     private fun progressOn() {

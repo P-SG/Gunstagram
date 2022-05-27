@@ -25,11 +25,10 @@ class DetailViewModel: BaseViewModel() {
     val isRefresh: LiveData<Boolean> get() = _isRefresh
     private val _isRefresh = MutableLiveData(true)
 
+    private val contentDTOs: ArrayList<ContentDTO> = arrayListOf()
+    private val contentUidList: ArrayList<String> = arrayListOf()
 
      fun getContent() {
-        val contentDTOs: ArrayList<ContentDTO> = arrayListOf()
-        val contentUidList: ArrayList<String> = arrayListOf()
-
         fireStore.collection("images")
             .orderBy("timeStamp").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 contentDTOs.clear()
@@ -51,11 +50,10 @@ class DetailViewModel: BaseViewModel() {
     }
 
     fun favoriteEvent(position: Int) {
-        val contentUidList: ArrayList<String> = arrayListOf()
         val tsDoc = fireStore.collection("images").document(contentUidList[position])
         fireStore.runTransaction{ transaction ->
             val uid = FirebaseAuth.getInstance().currentUser?.uid
-            val contentDTO = transaction.get(tsDoc!!).toObject(ContentDTO::class.java)
+            val contentDTO = transaction.get(tsDoc).toObject(ContentDTO::class.java)
 
             if (contentDTO!!.favorites.containsKey(uid)){
                 contentDTO.favoriteCount = contentDTO.favoriteCount -1

@@ -82,6 +82,10 @@ class DetailAdapter: RecyclerView.Adapter<DetailAdapter.DetailViewHolder>(){
                 binding.ivDetailFavorite.setImageResource(R.drawable.ic_favorite_border)
             }
 
+            binding.ivDetailFavorite.setOnClickListener {
+                listener?.onItemClick(binding.ivDetailFavorite, item, pos)
+            }
+
         }
     }
 
