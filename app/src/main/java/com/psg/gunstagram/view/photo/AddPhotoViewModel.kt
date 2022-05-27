@@ -1,6 +1,8 @@
 package com.psg.gunstagram.view.photo
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,6 +23,9 @@ class AddPhotoViewModel : BaseViewModel() {
     var auth = FirebaseAuth.getInstance()
     var fireStore = FirebaseFirestore.getInstance()
 
+    val isLoading: LiveData<Boolean> get() = _isLoading
+    private val _isLoading = MutableLiveData<Boolean>(false)
+
 
     fun uploadSuccess(explain: String) {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
@@ -28,10 +33,11 @@ class AddPhotoViewModel : BaseViewModel() {
 
         val storageRef = storage.reference.child("images")?.child(imageFileName)
 
+        _isLoading.value = true
         //Promise method
-        storageRef?.putFile(photoUri!!)?.continueWithTask { task: Task<UploadTask.TaskSnapshot> ->
+        storageRef.putFile(photoUri!!).continueWithTask { task: Task<UploadTask.TaskSnapshot> ->
             return@continueWithTask storageRef.downloadUrl
-        }?.addOnSuccessListener { uri ->
+        }.addOnSuccessListener { uri ->
             val contentDTO = ContentDTO()
 
             contentDTO.imageUrl = photoUri.toString()
@@ -40,10 +46,10 @@ class AddPhotoViewModel : BaseViewModel() {
             contentDTO.explain = explain
             contentDTO.timeStamp = System.currentTimeMillis()
 
-            fireStore?.collection("images")?.document()?.set(contentDTO)
+            fireStore.collection("images").document().set(contentDTO)
 
+            _isLoading.value = false
             event(Event.SuccessUpload(true))
-
         }
 
         //CallBack method

@@ -1,22 +1,19 @@
 package com.psg.gunstagram.view.photo
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import com.google.firebase.storage.FirebaseStorage
 import com.psg.gunstagram.R
 import com.psg.gunstagram.databinding.ActivityAddPhotoBinding
 import com.psg.gunstagram.util.Event
 import com.psg.gunstagram.view.base.BaseActivity
-import com.psg.gunstagram.view.login.LoginActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import java.text.SimpleDateFormat
-import java.util.*
 
 class AddPhotoActivity : BaseActivity<ActivityAddPhotoBinding, AddPhotoViewModel>(
     R.layout.activity_add_photo
@@ -24,6 +21,7 @@ class AddPhotoActivity : BaseActivity<ActivityAddPhotoBinding, AddPhotoViewModel
     override val TAG: String = AddPhotoActivity::class.java.simpleName
     override val viewModel: AddPhotoViewModel by inject()
     private val PICK_IMAGE_FROM_ALBUM = 0
+    private lateinit var dialog: Dialog
 //    private var photoUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +34,11 @@ class AddPhotoActivity : BaseActivity<ActivityAddPhotoBinding, AddPhotoViewModel
         requestPhotoUpload()
         binding.vm = viewModel
 
+        initLoading()
+
+        viewModel.isLoading.observe(this) {
+            if (it) progressOn() else progressOff()
+        }
 //        binding.btnAddPhoto.setOnClickListener {
 //            uploadSuccess()
 //        }
@@ -77,6 +80,24 @@ class AddPhotoActivity : BaseActivity<ActivityAddPhotoBinding, AddPhotoViewModel
                 finish()
             }
         }
+    }
+
+
+    private fun initLoading() {
+        dialog = Dialog(this).apply {
+            setCancelable(false)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setContentView(R.layout.dialog_loading)
+
+        }
+    }
+
+    private fun progressOn() {
+        dialog.show()
+    }
+
+    private fun progressOff(){
+        dialog.dismiss()
     }
 
 
