@@ -12,9 +12,9 @@ import com.psg.gunstagram.databinding.ItemDetailBinding
 import com.psg.gunstagram.data.model.ContentDTO
 
 class DetailAdapter: RecyclerView.Adapter<DetailAdapter.DetailViewHolder>(){
-    var fireStore: FirebaseFirestore? = null
+//    var fireStore: FirebaseFirestore? = null
     var contentDTOs: List<ContentDTO> = arrayListOf()
-    var contentUidList: List<String> = arrayListOf()
+//    var contentUidList: List<String> = arrayListOf()
     var sUid: String? = null
 
 
