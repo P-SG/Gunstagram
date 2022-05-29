@@ -3,24 +3,20 @@ package com.psg.gunstagram.view.main
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.psg.gunstagram.R
 import com.psg.gunstagram.databinding.ActivityMainBinding
 import com.psg.gunstagram.util.Constants
 import com.psg.gunstagram.view.base.BaseActivity
-import com.psg.gunstagram.view.login.LoginActivity
-import com.psg.gunstagram.view.login.LoginViewModel
 import com.psg.gunstagram.view.navi.AlarmFragment
 import com.psg.gunstagram.view.navi.GridFragment
-import com.psg.gunstagram.view.navi.UserFragment
 import com.psg.gunstagram.view.navi.detail.DetailFragment
+import com.psg.gunstagram.view.navi.user.UserFragment
 import com.psg.gunstagram.view.photo.AddPhotoActivity
 import org.koin.android.ext.android.inject
 
@@ -89,6 +85,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
             }
             Constants.FRAGMENT_ACCOUNT -> {
                 val userFragment = UserFragment()
+                val bundle = Bundle()
+                bundle.putString("destinationUid",FirebaseAuth.getInstance().currentUser?.uid)
+                userFragment.arguments = bundle
                 supportFragmentManager.beginTransaction().replace(R.id.fl_main, userFragment)
                     .commit()
             }

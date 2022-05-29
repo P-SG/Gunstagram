@@ -1,11 +1,21 @@
-package com.psg.gunstagram.view.navi
+package com.psg.gunstagram.view.navi.user
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.psg.gunstagram.R
+import com.psg.gunstagram.data.model.ContentDTO
+import com.psg.gunstagram.databinding.FragmentUserBinding
+import com.psg.gunstagram.view.navi.detail.DetailAdapter
+import org.koin.android.ext.android.inject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,6 +28,14 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class UserFragment : Fragment() {
+    var fragmentView : View? = null
+    private lateinit var binding: FragmentUserBinding
+    private val viewModel: UserViewModel by inject()
+    private lateinit var userAdapter: UserAdapter
+
+    var uid: String? = null
+    var auth: FirebaseAuth? = null
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -34,8 +52,33 @@ class UserFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        initView()
+        val uid: String? = arguments?.getString("destinationUid")
+        if (uid != null) {
+            viewModel.getUserInfo(uid)
+        }
+
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_user, container, false)
+        val width = resources.displayMetrics.widthPixels / 3
+        userAdapter = UserAdapter(width)
         // Inflate the layout for this fragment
-        return LayoutInflater.from(activity).inflate(R.layout.fragment_user, container, false)
+        return binding.root
+    }
+
+    private fun initView(){
+        initRecycler()
+        viewModel.contentDTO.observe(viewLifecycleOwner){
+            if (it != null){
+                userAdapter.setData(it)
+            }
+        }
+    }
+
+    private fun initRecycler(){
+        binding.rvAccount.adapter = userAdapter
+        val manager = GridLayoutManager(requireActivity(), 3)
+        binding.rvAccount.layoutManager = manager
+
     }
 
     companion object {
