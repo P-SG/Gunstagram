@@ -31,22 +31,26 @@ class AddPhotoViewModel : BaseViewModel() {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val imageFileName = "IMAGE_" + timeStamp + "_.png"
 
-        val storageRef = storage.reference.child("images")?.child(imageFileName)
+        val storageRef = storage.reference.child("images").child(imageFileName)
 
         _isLoading.value = true
         //Promise method
-        storageRef.putFile(photoUri!!).continueWithTask { task: Task<UploadTask.TaskSnapshot> ->
+        storageRef
+            .putFile(photoUri!!)
+            .continueWithTask { task: Task<UploadTask.TaskSnapshot> ->
             return@continueWithTask storageRef.downloadUrl
-        }.addOnSuccessListener { uri ->
-            val contentDTO = ContentDTO()
+        }.addOnSuccessListener { task2 ->
+            val contentDTO = ContentDTO(
+                photoUri.toString(),
+                auth.currentUser?.uid,
+                auth.currentUser?.email,
+                explain,
+                System.currentTimeMillis()
+            )
 
-            contentDTO.imageUrl = photoUri.toString()
-            contentDTO.uid = auth.currentUser?.uid
-            contentDTO.userId = auth.currentUser?.email
-            contentDTO.explain = explain
-            contentDTO.timeStamp = System.currentTimeMillis()
-
-            fireStore.collection("images").document().set(contentDTO)
+            fireStore.collection("images")
+                .document()
+                .set(contentDTO) // fireStore에 content정보 저장
 
             _isLoading.value = false
             event(Event.SuccessUpload(true))
