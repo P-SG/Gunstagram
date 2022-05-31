@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gunstagram</string>
+    <string name="search">검색</string>
+    <string name="home">홈</string>
+    <string name="gallery">갤러리</string>
+    <string name="favorite">좋아요</string>
+    <string name="account">계정</string>
+    <string name="post">게시물</string>
+    <string name="following">팔로잉</string>
+    <string name="follower">팔로워</string>
+    <string name="follow">팔로우</string>
+    <string name="follow_cancel">팔로우 취소</string>
+    <string name="profile">프로필</string>
+    <string name="send">보내기</string>
+    <string name="upload_success">업로드 성공</string>
+    <string name="upload_fail">업로드 실패</string>
+    <string name="back">뒤로가기</string>
+    <string name="signout">로그아웃</string>
+    <string name="signin_email">이메일 로그인</string>
+    <string name="signin_google">구글 로그인</string>
+    <string name="signin_facebook">페이스북 로그인</string>
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="upload_image">사진 업로드</string>
+</resources>
